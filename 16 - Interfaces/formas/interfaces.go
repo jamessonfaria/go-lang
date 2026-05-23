@@ -30,7 +30,7 @@ func (c circulo) area() float64 {
 	return math.Pi * math.Pow(c.raio, 2)
 }
 
-func main()  {
+func main() {
 	fmt.Println("Interfaces")
 
 	r := retangulo{10,10}
