@@ -5,7 +5,7 @@ import "fmt"
 func main() {
 	fmt.Println("Maps")
 
-	usuario := map[string]string {
+	usuario := map[string] string {
 		"nome": "Pedro",
 		"sobrenome": "Carlos",
 	}
@@ -13,7 +13,7 @@ func main() {
 	fmt.Println(usuario)
 	fmt.Println(usuario["nome"])
 
-	usuario2 := map[string]map[string]string {
+	usuario2 := map[string] map[string]string {
 		"nome": {
 			"primeiro": "João",
 			"ultimo": "Pedro",
@@ -31,7 +31,7 @@ func main() {
 	delete(usuario2, "nome")
 	fmt.Println(usuario2)
 
-	usuario2["signo"] = map[string]string {
+	usuario2["signo"] = map[string] string {
 		"id": "1",
 		"nome": "Peixe",
 	}

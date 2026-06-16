@@ -11,7 +11,7 @@ func main() {
 	i := 0
 	for i < 10 {
 		i++
-		fmt.Println("Incrementando i")
+		fmt.Println("Incrementando i", i)
 		time.Sleep(time.Second)
 	}
 
@@ -36,7 +36,7 @@ func main() {
 		fmt.Println(indice, string(letra))
 	}
 
-	usuario := map[string]string {
+	usuario := map[string] string {
 		"nome": "Leo",
 		"sobrenome": "Silva",
 	}

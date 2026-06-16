@@ -8,7 +8,7 @@ import (
 func main() {
 	fmt.Println("Arrays e Slices")
 
-	// ARRAY É RIDIGO, POUCO USADO NO GO 
+	// ARRAY É RIDIGO E QUANTIDADE FIXA, POUCO USADO NO GO 
 	var array1 [5]int
 	fmt.Println(array1)
 
@@ -28,6 +28,10 @@ func main() {
 	slice = append(slice, 1)
 	slice = append(slice, 2000)
 	fmt.Println(slice)
+
+	var slice1 []int
+	slice1 = append(slice1, 500, 600, 800)
+	fmt.Println(slice1)
 
 	fmt.Println(reflect.TypeOf(slice))
 	fmt.Println(reflect.TypeOf(array3))

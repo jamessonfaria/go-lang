@@ -5,6 +5,7 @@ import "fmt"
 func recuperaExecucao() {
 	if r := recover(); r != nil {
 		fmt.Println("Execução recuperada com sucesso!")
+		fmt.Println("Mensagem Panic: ", r)
 	}
 }
 
