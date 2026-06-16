@@ -98,6 +98,8 @@ Instala o executavel no diretorio de binarios do Go.
 
 ## Testes
 
+Comandos mais usados para executar testes e analisar cobertura.
+
 ### Rodar todos os testes
 
 ```bash
@@ -114,13 +116,37 @@ go test -v
 
 Exibe mais detalhes durante a execucao.
 
-### Ver cobertura de testes
+### Ver cobertura rapida no terminal
 
 ```bash
 go test -cover
 ```
 
-Mostra a cobertura de testes.
+Mostra o percentual de cobertura diretamente no terminal.
+
+### Gerar arquivo de cobertura para analise
+
+```bash
+go test -coverprofile=cobertura.out
+```
+
+Executa os testes e gera o arquivo `cobertura.out` com os dados de cobertura.
+
+### Ver cobertura por funcao a partir do arquivo
+
+```bash
+go tool cover -func=cobertura.out
+```
+
+Exibe no terminal o detalhamento da cobertura por funcao usando o arquivo gerado.
+
+### Abrir relatorio HTML a partir do arquivo
+
+```bash
+go tool cover -html=cobertura.out
+```
+
+Abre um relatorio HTML com a visualizacao detalhada da cobertura de testes.
 
 ## Gerenciar Pacotes
 
