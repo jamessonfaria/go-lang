@@ -1,0 +1,17 @@
+services:
+  mysql-db:
+    image: mysql:5.7
+    container_name: mysql_57_container
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_here
+      MYSQL_DATABASE: my_database
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_user_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

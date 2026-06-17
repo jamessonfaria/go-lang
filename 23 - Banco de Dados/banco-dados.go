@@ -9,7 +9,7 @@ import (
 )
 
 func main()  {
-	stringConexao := "my_user:my_password@/my_database?charset=utf8&parseTime=True&loc=Local"
+	stringConexao := "my_user:my_user_password@/my_database?charset=utf8&parseTime=True&loc=Local"
 	db, erro := sql.Open("mysql", stringConexao)
 	if erro != nil {
 		log.Fatal(erro)
