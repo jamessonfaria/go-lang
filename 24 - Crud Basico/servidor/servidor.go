@@ -66,7 +66,7 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(201)
+	w.WriteHeader(http.StatusCreated)
 	fmt.Fprintf(w, "Usuario inserido com sucesso! Id: %d", idInserido)
 }
 
@@ -133,4 +133,44 @@ func BuscarUsuario(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+}
+
+// AtualizarUsuario altera os dados do usuario no banco de dados
+func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
+
+	ID, erro := strconv.ParseUint(parametros["id"], 10, 32)
+	if erro != nil {
+		w.Write([]byte("Erro ao converter o parametro para inteiro"))
+		return
+	}
+
+	corpoRequisicao, erro := ioutil.ReadAll(r.Body)
+	if erro != nil {
+		w.Write([]byte("Falha ao ler o corpo da requisição!"))
+		return
+	}
+
+	var usuario usuario
+	if erro = json.Unmarshal(corpoRequisicao, &usuario); erro != nil {
+		w.Write([]byte("Erro ao converter o usuario para struct"))
+		return
+	}
+
+	db := conectarDb(w)
+	defer db.Close()
+
+	statement, erro := db.Prepare("update usuarios set nome = ?, email = ? where id = ?")
+	if erro != nil {
+		w.Write([]byte("Erro ao criar o statement!"))
+		return
+	}
+	defer statement.Close()
+
+	if _, erro := statement.Exec(usuario.Nome, usuario.Email, ID); erro != nil {
+		w.Write([]byte("Erro ao atualizar o usuario!"))
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
