@@ -2,6 +2,7 @@ package servidor
 
 import (
 	"crud/banco"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -14,6 +15,17 @@ type usuario struct {
 	Email string `json:"email"`
 }
 
+func conectarDb(w http.ResponseWriter) *sql.DB {
+	db, erro := banco.Conectar()
+	if erro != nil {
+		w.Write([]byte("Erro ao conectar o banco de dados!"))
+		return nil
+	}
+
+	return db
+}	
+
+// CriarUsuario inseri um usuario no banco de dados
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	corpoRequisicao, erro := ioutil.ReadAll(r.Body)
 	if erro != nil {
@@ -25,6 +37,7 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	if erro = json.Unmarshal(corpoRequisicao, &usuario); erro != nil {
 		w.Write([]byte("Erro ao converter o usuario para struct"))
+		return
 	}
 
 	db, erro := banco.Conectar()
@@ -56,5 +69,39 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(201)
 	fmt.Fprintf(w, "Usuario inserido com sucesso! Id: %d", idInserido)
+}
+
+// BuscarUsuarios traz todos os usuarios salvos no banco de dados
+func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {	
+	db := conectarDb(w)
+	defer db.Close()
+	
+	linhas, erro := db.Query("select * from usuarios")
+	if erro != nil {
+		w.Write([]byte("Erro ao buscar os usuarios"))
+		return
+	}
+
+	var usuarios []usuario
+	for linhas.Next() {
+		var usuario usuario
+
+		if erro := linhas.Scan(&usuario.ID, &usuario.Nome, &usuario.Email); erro != nil {
+			w.Write([]byte("Erro ao scanear o usuario"))
+			return
+		}
+
+		usuarios = append(usuarios, usuario)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	if erro := json.NewEncoder(w).Encode(usuarios); erro != nil {
+		w.Write([]byte("Erro ao converter os usuarios para JSON"))
+		return
+	}
+}
+
+// BuscarUsuario traz um usuario especifico salvo no banco de dados
+func BuscarUsuario(w http.ResponseWriter, r *http.Request) {
 
 }
